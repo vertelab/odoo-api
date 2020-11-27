@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+api_odoo_synchro_server,api.odoo.synchro,model_api_odoo_synchro_server,base.group_system,1,1,1,1
+api_odoo_synchro_obj,api.odoo.synchro.obj,model_api_odoo_synchro_obj,base.group_system,1,1,1,1
+api_odoo_synchro_obj_avoid,api.odoo.synchro.obj.avoid,model_api_odoo_synchro_obj_avoid,base.group_system,1,1,1,1
+api_odoo_synchro_obj_line,api.odoo.synchro.obj.line,model_api_odoo_synchro_obj_line,base.group_system,1,1,1,1
+synchro_res_request,synchro.res.request,model_res_request,base.group_system,1,1,1,1
