@@ -108,7 +108,6 @@ class ClientConfig(models.Model):
         return headers
 
     def get_url(self, path):
-        url = ''
         if self.url[-1] == '/':
             url = self.url[1:]
         else:
@@ -144,15 +143,13 @@ class ClientConfig(models.Model):
     def get_tjanster(self):
         return self.get_request('/lista/tjanster')
 
-    def get_tjanstekategori_id(self):
-        object_id = '2345'
+    def get_tjanstekategori_id(self, object_id):
         return self.get_request('/lista/tjanster/%s' % object_id)
 
     def get_leveransomraden(self):
         return self.get_request('/lista/leveransomraden')
 
-    def get_tjanst_id(self):
-        object_id = '2345'
+    def get_tjanst_id(self, object_id):
         return self.get_request('/lista/leveransomraden/%s' % object_id)
 
     def get_tjansteleverantorerd(self):
@@ -161,8 +158,7 @@ class ClientConfig(models.Model):
     def get_sprak(self):
         return self.get_request('/lista/sprak')
 
-    def get_tjansteleverantorer(self):
-        object_id = '2345'
+    def get_tjansteleverantorer(self, object_id):
         return self.get_request('/lista/tjansteleverantorer/%s' % object_id)
 
     def get_texter(self):
@@ -177,7 +173,45 @@ class ClientConfig(models.Model):
     def get_yrkesinriktning(self):
         return self.get_request('/lista/yrkesinriktning')
 
-    def get_utforandeVerksamhet(self):
+    def get_utforandeVerksamhet(self, query):
+        return self.get_request('/sok/utforandeVerksamhet', query)
+
+    def get_organisationsnummer(self):
+        object_id = '2345'
+        return self.get_request('/sok/utforandeVerksamhet/%s' % object_id)
+
+    def get_utforandeVerksamhetMedKoordinater(self, query):
+        return self.get_request('/sok/utforandeVerksamhetMedKoordinater', query)
+
+    def get_tjanst(self, object_id):
+        return self.get_request('/hamta/tjanst/%s' % object_id)
+
+    def get_utforande_verksamhet_id(self, object_id):
+        return self.get_request('/hamta/utforandeVerksamhet/%s' % object_id)
+
+    def get_adress(self, object_id):
+        return self.get_request('/hamta/adress/%s' % object_id)
+
+    def get_deklaration(self, object_id):
+        return self.get_request('/hamta/deklaration/%s' % object_id)
+
+    def get_tjansteleverantor(self, object_id):
+        return self.get_request('/hamta/tjansteleverantor/%s' % object_id)
+
+    # test functions
+    def test_get_tjanstekategori_id(self):
+        object_id = '2345'
+        return self.get_tjanstekategori_id(object_id)
+
+    def test_get_tjansteleverantorer(self):
+        object_id = '2345'
+        return self.get_tjansteleverantorer(object_id)
+
+    def test_get_tjanst_id(self):
+        object_id = '2345'
+        return self.get_tjanst_id(object_id)
+
+    def test_get_utforandeVerksamhet(self):
         query = {
             'tjanstekod_lista': 'tjanstekod_lista',
             'postort': 'postort',
@@ -187,13 +221,9 @@ class ClientConfig(models.Model):
             'sidnummer': '2345',
             'sidstorlek': '2345',
         }
-        return self.get_request('/sok/utforandeVerksamhet', query)
+        return self.get_utforandeVerksamhet(query)
 
-    def get_organisationsnummer(self):
-        object_id = '2345'
-        return self.get_request('/sok/utforandeVerksamhet/%s' % object_id)
-
-    def get_utforandeVerksamhetMedKoordinater(self):
+    def test_get_utforandeVerksamhetMedKoordinater(self):
         query = {
             'tjanstekod_lista': 'tjanstekod_lista',
             'postort': 'postort',
@@ -206,24 +236,24 @@ class ClientConfig(models.Model):
             'longitud': '2345',
             'max_avstand': '2345',
         }
-        return self.get_request('/sok/utforandeVerksamhetMedKoordinater', query)
+        return self.get_utforandeVerksamhetMedKoordinater(query)
 
-    def get_tjanst(self):
+    def test_get_tjanst(self):
         object_id = '2345'
-        return self.get_request('/hamta/tjanst/%s' % object_id)
+        return self.get_tjanst(object_id)
 
-    def get_utforande_verksamhet_id(self):
+    def test_get_utforande_verksamhet_id(self):
         object_id = '2345'
-        return self.get_request('/hamta/utforandeVerksamhet/%s' % object_id)
+        return self.get_utforande_verksamhet_id(object_id)
 
-    def get_adress(self):
+    def test_get_adress(self):
         object_id = '2345'
-        return self.get_request('/hamta/adress/%s' % object_id)
+        return self.get_adress(object_id)
 
-    def get_deklaration(self):
+    def test_get_deklaration(self):
         object_id = '2345'
-        return self.get_request('/hamta/deklaration/%s' % object_id)
+        return self.get_deklaration(object_id)
 
-    def get_tjansteleverantor(self):
+    def test_get_tjansteleverantor(self):
         object_id = '2345'
-        return self.get_request('/hamta/get_tjansteleverantor/%s' % object_id)
+        return self.get_tjansteleverantor(object_id)

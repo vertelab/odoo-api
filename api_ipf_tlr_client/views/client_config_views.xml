@@ -33,7 +33,7 @@
                     <button class="btn-secondary" type="object"
                             string="tjanstekategori-id"
                             help="Listar tjänster som tillhör en tjänstekategori."
-                            name="get_tjanstekategori_id"/>
+                            name="test_get_tjanstekategori_id"/>
                     <button class="btn-secondary" type="object"
                             string="leveransomraden"
                             help="Listar leveransområden som tillhör en tjänst, leveransområden innehåller orter."
@@ -41,7 +41,7 @@
                     <button class="btn-secondary" type="object"
                             string="tjanst-id"
                             help="Listar leveransområden för en specifik tjänst."
-                            name="get_tjanst_id"/>
+                            name="test_get_tjanst_id"/>
                     <button class="btn-secondary" type="object"
                             string="sprak"
                             help="Listar språk."
@@ -49,7 +49,7 @@
                     <button class="btn-secondary" type="object"
                             string="tjansteleverantorer"
                             help="Listar tjänsteleverantörer för en angiven tjänst."
-                            name="get_tjansteleverantorer"/>
+                            name="test_get_tjansteleverantorer"/>
                     <button class="btn-secondary" type="object"
                             string="texter"
                             help="Listar texter."
@@ -73,27 +73,27 @@
                     <button class="btn-secondary" type="object"
                             string="utforandeVerksamhetMedKoordinater"
                             help="Hämta utförande verksamhet med koordinater för sökande. Används för att hitta verksamheter som kan leverera tjänster i närheten av sökande."
-                            name="get_utforandeVerksamhetMedKoordinater"/>
+                            name="test_get_utforandeVerksamhetMedKoordinater"/>
                     <button class="btn-secondary" type="object"
                             string="tjanst"
                             help="Hämta en specifik tjänst."
-                            name="get_tjanst"/>
+                            name="test_get_tjanst"/>
                     <button class="btn-secondary" type="object"
                             string="utforande-verksamhet-id"
                             help="Hämta utförande verksamhet med ett utforandeVerksamhetId som tillhör verksamheten."
-                            name="get_utforande_verksamhet_id"/>
+                            name="test_get_utforande_verksamhet_id"/>
                     <button class="btn-secondary" type="object"
                             string="adress"
                             help="Hämta en specifik adress med angivet id."
-                            name="get_adress"/>
+                            name="test_get_adress"/>
                     <button class="btn-secondary" type="object"
                             string="deklaration"
                             help="Hämta en specifik deklaration med angivet id."
-                            name="get_deklaration"/>
+                            name="test_get_deklaration"/>
                     <button class="btn-secondary" type="object"
                             string="tjansteleverantor"
                             help="Hämta en specifik tjänsteleverantör med angivet id."
-                            name="get_tjansteleverantor"/>
+                            name="test_get_tjansteleverantor"/>
                 </header>
                 <sheet>
                     <group>
