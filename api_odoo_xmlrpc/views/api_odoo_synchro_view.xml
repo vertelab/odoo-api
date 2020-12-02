@@ -2,7 +2,7 @@
 <odoo>
 
     <menuitem id="synch_config" name="Configuration Synchronization"
-              parent="base.menu_administration" sequence="30"/>
+              parent="base_setup.menu_config" sequence="3" groups="base.group_no_one"/>
 
     <record id="view_transfer_line_form" model="ir.ui.view">
         <field name="name">api.odoo.synchro.obj.line.form</field>
@@ -94,8 +94,10 @@
                         <field name="synchronize_date"/>
                     </group>
                     <separator string="Fields Not Sync."/>
-                    <field name="avoid_ids">
+                    <field name="avoid_ids" context="{'default_model_id': model_id}">
                         <tree string="Fields" editable="bottom">
+                            <field name="model_id" invisible="1"/>
+                            <field name="field_id" domain="[('model_id', '=', model_id)]"/>
                             <field name="name"/>
                         </tree>
                     </field>
@@ -115,6 +117,7 @@
                 <field name="server_id"/>
                 <field name="action"/>
                 <field name="synchronize_date"/>
+                <field name="active"/>
             </tree>
         </field>
     </record>
@@ -126,11 +129,15 @@
             <search string="Synchronized objects">
                 <field name="model_id"/>
                 <field name="synchronize_date"/>
+                <filter name="Active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="Inactive" string="Inactive" domain="[('active', '=', False)]" />
                 <group string="Group By">
                   <filter string="Object to synchronize" name="grp_model"
                           context="{'group_by':'model_id'}"/>
                   <filter string="Latest synchronization" name="grp_sync_date"
                           context="{'group_by':'synchronize_date'}"/>
+                   <filter name="active" string="Active"
+                        context="{'group_by': 'active'}"/>
                 </group>
             </search>
         </field>

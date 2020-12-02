@@ -54,10 +54,11 @@ class OdooAPISynchroObjAvoid(models.Model):
     _name = "api.odoo.synchro.obj.avoid"
     _description = "Fields to not synchronize"
 
-    name = fields.Char('Field Name', required=True)
+    field_id = fields.Many2one('ir.model.fields')
+    name = fields.Char('Field Name', related='field_id.name', store=True)
     obj_id = fields.Many2one('api.odoo.synchro.obj', 'Object',
                              required=True, ondelete='cascade')
-
+    model_id = fields.Many2one('ir.model')
 
 class OdooAPISynchroObjLine(models.Model):
     _name = "api.odoo.synchro.obj.line"
