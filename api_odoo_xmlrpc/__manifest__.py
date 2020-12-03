@@ -7,7 +7,7 @@
     "author": "Vertel AB",
     "website": "https://vertel.se/",
     "depends": [
-        "base",
+        "base_setup",
     ],
     "data": [
         "security/ir.model.access.csv",
