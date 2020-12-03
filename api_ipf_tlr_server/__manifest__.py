@@ -21,7 +21,7 @@
 ################################################################################
 
 {
-    'name': 'IPF CompletionReport Server',
+    'name': 'IPF TLR Server',
     'version': '12.0.0.0.1',
     'category': 'Tools',
     'description': """
