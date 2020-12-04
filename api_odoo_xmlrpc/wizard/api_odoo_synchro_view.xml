@@ -44,7 +44,25 @@
         </field>
     </record>
 
-    <menuitem id="menu_synchronization" name="Synchronization" parent="base.menu_administration"/>
+
+
+    <menuitem
+            id="base_setup.menu_config"
+            name="General Settings"
+            parent="base.menu_administration"
+            sequence="2"
+            groups="base.group_system"/>
+
+     <menuitem
+            id="menu_config_base_setup"
+            name="General Settings"
+            parent="base_setup.menu_config"
+            sequence="1"
+            action="base_setup.action_general_configuration"
+            groups="base.group_system"/>
+
+    <menuitem id="menu_synchronization" name="Synchronization"
+              sequence="2" parent="base_setup.menu_config" groups="base.group_no_one"/>
 
     <menuitem parent="api_odoo_xmlrpc.menu_synchronization" name="Synchronize"
               action="action_view_api_odoo_xmlrpc" id="menu_action_view_odoo_api_synchro"/>
