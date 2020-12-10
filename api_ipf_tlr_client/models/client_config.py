@@ -34,7 +34,7 @@ class ClientConfig(models.Model):
     _name = 'ipf.tlr.client.config'
     _description = 'tlr ipf client'
     _rec_name = 'url'
-    _suffix_url = '/api/v1'
+    _suffix_url = '/v1'
 
     url = fields.Char(string='Url',
                       required=True)
