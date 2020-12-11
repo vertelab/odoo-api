@@ -110,6 +110,7 @@
                                 <field name="url"/>
                                 <field name="method"/>
                                 <field name="response_code"/>
+                                <field name="message"/>
                             </tree>
                             <form>
                                 <group>
