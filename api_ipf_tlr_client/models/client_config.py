@@ -64,7 +64,8 @@ class ClientConfig(models.Model):
             url=url,
             data=payload,
             headers=headers,
-            params=params
+            params=params,
+            verify=False
         )
 
         self.create_request_history(
