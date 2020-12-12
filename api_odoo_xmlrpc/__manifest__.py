@@ -1,11 +1,12 @@
 {
     "name": "API Odoo XMLRPC - Sync data",
-    "version": "12.0.1.0.0",
+    "version": "12.0.0.2",
     "category": "Tools",
     "license": "AGPL-3",
     "summary": "Exchange Data between servers",
     "author": "Vertel AB",
     "website": "https://vertel.se/",
+    "description": "Module to sync data",
     "depends": [
         "base_setup",
     ],
