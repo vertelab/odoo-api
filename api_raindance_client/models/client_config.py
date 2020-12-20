@@ -132,6 +132,7 @@ class ClientConfig(models.Model):
             url=url,
             payload=json.dumps(payload),
             headers=self.get_headers())
+
         return response
 
     def get_invoice(self, invoice_id):
