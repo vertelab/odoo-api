@@ -11,6 +11,9 @@
                     <field name="server_url"/>
                     <field name="user_id"/>
                 </group>
+                <group>
+                    <field name="object_ids" widget="many2many_tags"/>
+                </group>
                 <footer>
                     <button name="upload_download_multi_thread" string="Synchronize"
                             type="object" class="oe_highlight"/>
@@ -64,7 +67,7 @@
     <menuitem id="menu_synchronization" name="Synchronization"
               sequence="2" parent="base_setup.menu_config" groups="base.group_no_one"/>
 
-    <menuitem parent="api_odoo_xmlrpc.menu_synchronization" name="Synchronize"
+    <menuitem parent="base_synchro.menu_synchronization" name="Synchronize"
               action="action_view_api_odoo_xmlrpc" id="menu_action_view_odoo_api_synchro"/>
 
 </odoo>

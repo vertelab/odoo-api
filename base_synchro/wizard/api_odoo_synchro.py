@@ -16,10 +16,8 @@ class RPCProxyOne(object):
     def __init__(self, server, ressource):
         """Class to store one RPC proxy server."""
         self.server = server
-        print ("Server URL =-=-", server.server_url)
         local_url = 'http://%s:%d/xmlrpc/common' % (server.server_url,
                                                     server.server_port)
-        print ("Local URL =-=-", local_url)
         try:
             rpc = ServerProxy(local_url, allow_none=True)
             self.uid = rpc.login(server.server_db, server.login,
@@ -50,10 +48,19 @@ class BaseSynchro(models.TransientModel):
     _name = 'api.odoo.synchro'
     _description = 'Base Synchronization'
 
+    @api.onchange('server_url')
+    def onchange_server_url(self):
+        if self.server_url and self.server_url.obj_ids:
+            self.object_ids = [(4, id) for id in self.server_url.obj_ids.ids]
+        else:
+            self.object_ids = []
+
     server_url = fields.Many2one('api.odoo.synchro.server', "Server",
                                  required=True)
     user_id = fields.Many2one('res.users', "Send Result To",
                               default=lambda self: self.env.user)
+    object_ids = fields.Many2many('api.odoo.synchro.obj')
+
     report = []
     report_total = 0
     report_create = 0
@@ -61,22 +68,14 @@ class BaseSynchro(models.TransientModel):
 
     @api.model
     def synchronize(self, server, object):
-        print ("inside synchronize =-=-=-")
         sync_ids = []
         pool1 = RPCProxy(server)
-        print ("Pool 1=-=-=", pool1)
         pool2 = self
-        print ("Pool 2 =-=-", pool2)
         dt = object.synchronize_date
-        print ("Dt =-=-=", dt)
         module = pool1.get('ir.module.module')
-        print ("Module -=-=", module)
         model_obj = object.model_id.model
-        print ("model obj =-=", model_obj)
         avoid_field_list = [a.name for a in object.avoid_ids]
-        print ("Avoid fiels list =-=", avoid_field_list)
-        print ("Object Action -=-=", object.action)
-        if module.search_count([("name", "ilike", "api_odoo_xmlrpc"),
+        if module.search_count([("name", "ilike", "base_synchro"),
                                 ('state', '=', 'installed')]) < 1:
             raise Warning(_('If your Synchronization direction is \
                           download and/or upload, please install \
@@ -91,7 +90,6 @@ class BaseSynchro(models.TransientModel):
 
             sync_ids += pool2.env['api.odoo.synchro.obj'].get_ids(
                 model_obj, dt, eval(object.domain), {'action': 'u'})
-        print ("Sync IDs =-=-", sync_ids)
         for dt, sync_id, action in sync_ids:
             destination_inverted = False
             if action == 'd':
@@ -107,20 +105,16 @@ class BaseSynchro(models.TransientModel):
             else:
                 pool = pool_src.env[object.model_id.model]
                 value = pool.search_read([('id', '=', sync_id)])[0]
-            print ("Values =-=-=", value)
             avoid_field_list += ['create_date', 'write_date']
 
             field_vals = dict([(key, val[0] if isinstance(val, tuple)
                                 else val) for key, val in filter(
                 lambda i: i[0] not in avoid_field_list, value.items())])
 
-            print ("Field vals =-=-=", field_vals)
             value = self.data_transform(
                 pool_src, pool_dest, object.model_id.model, field_vals, action,
                 destination_inverted, avoid_field_list)
             id2 = self.get_id(object.id, sync_id, action)
-            print ("Value -0-0-0-0-0-", value)
-            print ("ID2 -=-=--", id2)
             if id2:
                 _logger.debug("Updating model %s [%d]", object.model_id.name,
                               id2)
@@ -133,7 +127,6 @@ class BaseSynchro(models.TransientModel):
                 self.report_write += 1
             else:
                 _logger.debug("Creating model %s", object.model_id.name)
-                print ("Value =-=-", value)
                 try:
                     if not destination_inverted:
                         new_id = pool_dest.env[object.model_id.model
@@ -154,13 +147,11 @@ class BaseSynchro(models.TransientModel):
 
     @api.model
     def get_id(self, object_id, id, action):
-        print ("inside get id =-=-=")
         synch_line_obj = self.env['api.odoo.synchro.obj.line']
         field_src = (action == 'u') and 'local_id' or 'remote_id'
         field_dest = (action == 'd') and 'local_id' or 'remote_id'
         synch_line_rec = synch_line_obj.search_read(
             [('obj_id', '=', object_id), (field_src, '=', id)], [field_dest])
-        print ("Return from get id =-=")
         return synch_line_rec and synch_line_rec[0][field_dest] or False
 
     @api.model
@@ -217,7 +208,6 @@ class BaseSynchro(models.TransientModel):
     @api.model
     def data_transform(self, pool_src, pool_dest, obj, data, action=None,
                        destination_inverted=False, avoid_fields=[]):
-        print ("inside data trnsform =-=-")
         if action is None:
             action = {}
         if not destination_inverted:
@@ -231,9 +221,7 @@ class BaseSynchro(models.TransientModel):
                  ('name', 'not in', avoid_fields)],
                 ['name', 'ttype', 'relation'])
         _logger.debug("Transforming data")
-        print ("FIELDS =-=-", fields)
         for field in fields:
-            print ("Field =-=-=", field)
             ftype = field.get('ttype')
             fname = field.get('name')
             if fname in avoid_fields:
@@ -262,21 +250,17 @@ class BaseSynchro(models.TransientModel):
                         res, action, destination_inverted),
                         data[fname]) if rec])]
         del data['id']
-        print ("Data =-=-=-=", data)
         return data
 
     @api.multi
     def upload_download(self):
-        print ("inside upload download =-=-=")
         self.ensure_one()
         self.report = []
         start_date = fields.Datetime.now()
         server = self.server_url
-        print ("Sercer =-=-=", server)
-        for obj_rec in server.obj_ids:
+        for obj_rec in self.object_ids:
             _logger.debug("Start synchro of %s", obj_rec.name)
             self.synchronize(server, obj_rec)
-            print ("Completed sync =-=-=")
             if obj_rec.action == 'b':
                 time.sleep(1)
             obj_rec.write({'synchronize_date': fields.Datetime.now()})
@@ -313,12 +297,11 @@ Exceptions:
     def upload_download_multi_thread(self):
         threaded_synchronization = threading.Thread(
             target=self.upload_download())
-        print ("jdshfjhsdjfhskjdfhskjd")
         threaded_synchronization.run()
-        view_rec = self.env.ref('api_odoo_xmlrpc.view_odoo_api_xmlrc_finish',
+        view_rec = self.env.ref('base_synchro.view_odoo_api_xmlrc_finish',
                                 raise_if_not_found=False)
         action = self.env.ref(
-            'api_odoo_xmlrpc.action_view_api_odoo_xmlrpc', raise_if_not_found=False
+            'base_synchro.action_view_api_odoo_xmlrpc', raise_if_not_found=False
         ).read([])[0]
         action['views'] = [(view_rec and view_rec.id or False, 'form')]
         return action
