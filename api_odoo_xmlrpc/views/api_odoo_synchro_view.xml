@@ -92,6 +92,7 @@
                         <field name="sequence"/>
                         <field name="domain" colspan="4"/>
                         <field name="synchronize_date"/>
+                        <field name="cron_id" readonly="1" force_save="1"/>
                     </group>
                     <separator string="Fields Not Sync."/>
                     <field name="avoid_ids" context="{'default_model_id': model_id}">

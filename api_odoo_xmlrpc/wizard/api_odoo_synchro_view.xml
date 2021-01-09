@@ -11,6 +11,9 @@
                     <field name="server_url"/>
                     <field name="user_id"/>
                 </group>
+                <group>
+                    <field name="object_ids" widget="many2many_tags"/>
+                </group>
                 <footer>
                     <button name="upload_download_multi_thread" string="Synchronize"
                             type="object" class="oe_highlight"/>
