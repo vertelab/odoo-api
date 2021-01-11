@@ -145,6 +145,10 @@ class ClientConfig(models.Model):
             headers=self.get_headers())
         return response
 
+    def verify_config_is_set(self):
+        return all(
+            (self.url, self.environment, self.client_id, self.client_secret))
+
     def testing_get_invoices(self):
         return self.get_invoices()
 
