@@ -47,13 +47,13 @@ class ClientConfig(models.Model):
                                 required=True)
     client_id = fields.Char(string='Client ID',
                             required=True)
-    environment = fields.Selection(selection=[('u1', 'U1'),
-                                              ('i1', 'I1'),
-                                              ('t1', 'IT'),
-                                              ('t2', 'T2'),
-                                              ('prod', 'PROD'), ],
+    environment = fields.Selection(selection=[('U1', 'U1'),
+                                              ('I1', 'I1'),
+                                              ('T1', 'IT'),
+                                              ('T2', 'T2'),
+                                              ('PROD', 'PROD'), ],
                                    string='Environment',
-                                   default='u1',
+                                   default='U1',
                                    required=True)
     request_history_ids = fields.One2many('api.raindance.request.history',
                                           'config_id',
@@ -72,7 +72,8 @@ class ClientConfig(models.Model):
                                     url=url,
                                     data=payload,
                                     headers=headers,
-                                    params=params)
+                                    params=params,
+                                    verify=False)
         self.create_request_history(method=method,
                                     url=url,
                                     response=response,
@@ -130,8 +131,9 @@ class ClientConfig(models.Model):
         response = self.request_call(
             method="GET",
             url=url,
-            payload=json.dumps(payload),
-            headers=self.get_headers())
+            headers=self.get_headers(),
+            params=payload
+            )
 
         return response
 
@@ -150,7 +152,7 @@ class ClientConfig(models.Model):
             (self.url, self.environment, self.client_id, self.client_secret))
 
     def testing_get_invoices(self):
-        return self.get_invoices()
+        return self.get_invoices(123,"200220")
 
     def testing_get_invoice(self):
         return self.get_invoice('758492')
