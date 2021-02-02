@@ -72,7 +72,8 @@ class ClientConfig(models.Model):
                                     url=url,
                                     data=payload,
                                     headers=headers,
-                                    params=params)
+                                    params=params,
+                                    verify=False)
         self.create_request_history(method=method,
                                     url=url,
                                     response=response,
@@ -130,8 +131,9 @@ class ClientConfig(models.Model):
         response = self.request_call(
             method="GET",
             url=url,
-            payload=json.dumps(payload),
-            headers=self.get_headers())
+            headers=self.get_headers(),
+            params=payload
+            )
 
         return response
 
@@ -150,7 +152,7 @@ class ClientConfig(models.Model):
             (self.url, self.environment, self.client_id, self.client_secret))
 
     def testing_get_invoices(self):
-        return self.get_invoices()
+        return self.get_invoices(123,"200220")
 
     def testing_get_invoice(self):
         return self.get_invoice('758492')
