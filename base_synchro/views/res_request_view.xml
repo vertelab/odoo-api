@@ -60,6 +60,6 @@
         <field name="search_view_id" ref="view_res_request_search"/>
     </record>
 
-    <menuitem id="menu_res_request" action="action_res_request" parent="api_odoo_xmlrpc.menu_history_sync"/>
+    <menuitem id="menu_res_request" action="action_res_request" parent="base_synchro.menu_history_sync"/>
 
 </odoo>

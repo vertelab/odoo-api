@@ -66,10 +66,10 @@
     </record>
 
     <menuitem id="menu_history_sync" name="History"
-              groups="base.group_no_one" parent="api_odoo_xmlrpc.menu_synchronization"/>
+              groups="base.group_no_one" parent="base_synchro.menu_synchronization"/>
     <menuitem action="action_odoo_api_synchro_obj_line_tree"
               id="menu_action_odoo_api_synchro_obj_line_tree"
-              parent="api_odoo_xmlrpc.menu_history_sync"/>
+              parent="base_synchro.menu_history_sync"/>
 
     <record id="api_odoo_synchro_obj_form" model="ir.ui.view">
         <field name="name">api.odoo.synchro.obj.form</field>
@@ -92,6 +92,7 @@
                         <field name="sequence"/>
                         <field name="domain" colspan="4"/>
                         <field name="synchronize_date"/>
+                        <field name="cron_id" readonly="1" force_save="1"/>
                     </group>
                     <separator string="Fields Not Sync."/>
                     <field name="avoid_ids" context="{'default_model_id': model_id}">
@@ -159,7 +160,7 @@
     </record>
 
     <menuitem action="action_transfer_tree" id="transfer_menu_id"
-              parent="api_odoo_xmlrpc.synch_config" name="Objects to be Synchronized"/>
+              parent="base_synchro.synch_config" name="Objects to be Synchronized"/>
 
     <record id="view_api_odoo_synchro_server_tree" model="ir.ui.view">
         <field name="name">api.odoo.synchro.server.tree</field>
@@ -205,6 +206,6 @@
     </record>
 
     <menuitem action="action_api_odoo_synchro_server_tree" id="synchro_server_tree_menu_id"
-              parent="api_odoo_xmlrpc.synch_config"/>
+              parent="base_synchro.synch_config"/>
 
 </odoo>
