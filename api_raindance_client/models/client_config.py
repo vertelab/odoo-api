@@ -68,6 +68,7 @@ class ClientConfig(models.Model):
             params.update(secret)
         else:
             params = secret
+        _logger.warn("DAER payload: %s" % payload)
         response = requests.request(method=method,
                                     url=url,
                                     data=payload,
@@ -81,7 +82,7 @@ class ClientConfig(models.Model):
                                     headers=headers,
                                     params=params)
         if response.status_code != 200:
-            raise ApiRaindanceError(response.text)
+            raise ApiRaindanceError("%s: %s" % (response.status_code, response.text))
         return response
 
     @api.model
@@ -95,7 +96,10 @@ class ClientConfig(models.Model):
                   'response_headers': response.headers,
                   'params': params,
                   'response_code': response.status_code}
-        values.update(message=json.loads(response.content))
+        try:
+            values.update(message=json.loads(response.content))
+        except:
+            pass
         self.env['api.raindance.request.history'].create(values)
         self._cr.commit()
 
@@ -112,20 +116,18 @@ class ClientConfig(models.Model):
     @api.model
     def get_url(self, path):
         if self.url[-1] == '/':
-            url = self.url[1:]
+            url = self.url + path
         else:
-            url = self.url
-        url += self._suffix_url
-        if path[0] != '/':
-            url += '/'
-        url += path
+            url = self.url + '/' + path
+        _logger.warn(url)
         return url
 
     def get_invoices(self, supplier_id=None, date=None):
-        url = self.get_url('/invoices')
+        url = self.get_url('invoices')
         payload = {}
         if supplier_id:
             payload.update({'supplier_id': supplier_id})
+        payload['date'] = date or ""
         if date:
             payload.update({'date': date})
         response = self.request_call(
@@ -138,7 +140,7 @@ class ClientConfig(models.Model):
         return response
 
     def get_invoice(self, invoice_id):
-        url = self.get_url('/invoices/%s' % invoice_id)
+        url = self.get_url('invoices/%s' % invoice_id)
         payload = {}
         response = self.request_call(
             method="GET",
