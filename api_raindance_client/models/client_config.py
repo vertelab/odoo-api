@@ -75,6 +75,7 @@ class ClientConfig(models.Model):
                                     headers=headers,
                                     params=params,
                                     verify=False)
+        _logger.warn("DAER response: %s: %s" % (response.status_code, response.text))
         self.create_request_history(method=method,
                                     url=url,
                                     response=response,
@@ -106,7 +107,7 @@ class ClientConfig(models.Model):
     @api.model
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
-        headers = {'x-amf-mediaType': "application/json",
+        headers = {'Content-Type': "application/json",
                    'AF-TrackingId': tracking_id,
                    'AF-SystemId': "AF-SystemId",
                    'AF-EndUserId': "AF-EndUserId",
@@ -134,7 +135,7 @@ class ClientConfig(models.Model):
             method="GET",
             url=url,
             headers=self.get_headers(),
-            params=payload
+            payload=payload
             )
 
         return response
