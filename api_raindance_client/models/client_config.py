@@ -113,13 +113,11 @@ class ClientConfig(models.Model):
     @api.model
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
-        headers = {
-            "Content-Type": "application/json",
-            "AF-TrackingId": tracking_id,
-            "AF-SystemId": "AF-SystemId",
-            "AF-EndUserId": "AF-EndUserId",
-            "AF-Environment": self.environment,
-        }
+        headers = {'Content-Type': "application/json",
+                   'AF-TrackingId': tracking_id,
+                   'AF-SystemId': "AFDAFA",
+                   'AF-EndUserId': "*sys*",
+                   'AF-Environment': self.environment}
         return headers
 
     @api.model
@@ -131,18 +129,15 @@ class ClientConfig(models.Model):
         _logger.warn(url)
         return url
 
-    def get_invoices(self, supplier_id=None, date=None):
-        url = self.get_url("invoices")
-        payload = {}
-        if supplier_id:
-            payload.update({"supplier_id": supplier_id})
-        payload["date"] = date or ""
-        if date:
-            payload.update({"date": date})
+    def get_invoices(self, order_id=None):
+        url = self.get_url('/orders')
+        params = {'order_id': order_id}
         response = self.request_call(
-            method="GET", url=url, headers=self.get_headers(), params=payload
-        )
-
+            method="GET",
+            url=url,
+            headers=self.get_headers(),
+            params=params
+            )
         return response
 
     def get_invoice(self, invoice_id):
