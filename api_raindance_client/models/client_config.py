@@ -130,7 +130,7 @@ class ClientConfig(models.Model):
         return url
 
     def get_invoices(self, order_id=None):
-        url = self.get_url('/orders')
+        url = self.get_url('invoices')
         params = {'order_id': order_id}
         response = self.request_call(
             method="GET",
@@ -138,18 +138,19 @@ class ClientConfig(models.Model):
             headers=self.get_headers(),
             params=params
             )
-        return response
+        return json.loads(response.text)
 
     def get_invoice(self, invoice_id):
         url = self.get_url("invoices/%s" % invoice_id)
-        payload = {}
+        # payload = {}
         response = self.request_call(
             method="GET",
             url=url,
-            payload=json.dumps(payload),
+            # payload=json.dumps(payload),
             headers=self.get_headers(),
+            params=False
         )
-        return response
+        return json.loads(response.text)
 
     def verify_config_is_set(self):
         return all((self.url, self.environment, self.client_id, self.client_secret))
