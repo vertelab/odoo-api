@@ -67,7 +67,7 @@ class ClientConfig(models.Model):
             params.update(secret)
         else:
             params = secret
-        _logger.warn("DAER payload: %s" % payload)
+        # _logger.warn("DAER payload: %s" % payload)
         response = requests.request(
             method=method,
             url=url,
@@ -76,7 +76,7 @@ class ClientConfig(models.Model):
             params=params,
             verify=False,
         )
-        _logger.warn("DAER response: %s: %s" % (response.status_code, response.text))
+        # _logger.warn("DAER response: %s: %s" % (response.status_code, response.text))
         self.create_request_history(
             method=method,
             url=url,
@@ -126,7 +126,6 @@ class ClientConfig(models.Model):
             url = self.url + path
         else:
             url = self.url + "/" + path
-        _logger.warn(url)
         return url
 
     def get_invoices(self, order_id=None):
