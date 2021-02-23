@@ -35,124 +35,128 @@ class ApiRaindanceError(Exception):
 
 
 class ClientConfig(models.Model):
-    _name = 'api.raindance.client.config'
-    _rec_name = 'url'
-    _order = 'sequence, id'
-    _suffix_url = ''
+    _name = "api.raindance.client.config"
+    _rec_name = "url"
+    _order = "sequence, id"
+    _suffix_url = ""
 
     sequence = fields.Integer()
-    url = fields.Char(string='Url',
-                      required=True)
-    client_secret = fields.Char(string='Client Secret',
-                                required=True)
-    client_id = fields.Char(string='Client ID',
-                            required=True)
-    environment = fields.Selection(selection=[('U1', 'U1'),
-                                              ('I1', 'I1'),
-                                              ('T1', 'T1'),
-                                              ('T2', 'T2'),
-                                              ('PROD', 'PROD'), ],
-                                   string='Environment',
-                                   default='U1',
-                                   required=True)
-    request_history_ids = fields.One2many('api.raindance.request.history',
-                                          'config_id',
-                                          string='Requests')
+    url = fields.Char(string="Url", required=True)
+    client_secret = fields.Char(string="Client Secret", required=True)
+    client_id = fields.Char(string="Client ID", required=True)
+    environment = fields.Selection(
+        selection=[
+            ("U1", "U1"),
+            ("I1", "I1"),
+            ("T1", "T1"),
+            ("T2", "T2"),
+            ("PROD", "PROD"),
+        ],
+        string="Environment",
+        default="U1",
+        required=True,
+    )
+    request_history_ids = fields.One2many(
+        "api.raindance.request.history", "config_id", string="Requests"
+    )
 
     @api.model
-    def request_call(self, method, url, payload=None,
-                     headers=None, params=None):
-        secret = {"client_secret": self.client_secret,
-                  "client_id": self.client_id}
+    def request_call(self, method, url, payload=None, headers=None, params=None):
+        secret = {"client_secret": self.client_secret, "client_id": self.client_id}
         if params:
             params.update(secret)
         else:
             params = secret
-        response = requests.request(method=method,
-                                    url=url,
-                                    data=payload,
-                                    headers=headers,
-                                    params=params,
-                                    verify=False)
-        self.create_request_history(method=method,
-                                    url=url,
-                                    response=response,
-                                    payload=payload,
-                                    headers=headers,
-                                    params=params)
+        # _logger.warn("DAER payload: %s" % payload)
+        response = requests.request(
+            method=method,
+            url=url,
+            data=payload,
+            headers=headers,
+            params=params,
+            verify=False,
+        )
+        # _logger.warn("DAER response: %s: %s" % (response.status_code, response.text))
+        self.create_request_history(
+            method=method,
+            url=url,
+            response=response,
+            payload=payload,
+            headers=headers,
+            params=params,
+        )
         if response.status_code != 200:
-            raise ApiRaindanceError(response.text)
+            raise ApiRaindanceError("%s: %s" % (response.status_code, response.text))
         return response
 
     @api.model
-    def create_request_history(self, method, url, response, payload=None,
-                               headers=None, params=None):
-        values = {'config_id': self.id,
-                  'method': method,
-                  'url': url,
-                  'payload': payload,
-                  'request_headers': headers,
-                  'response_headers': response.headers,
-                  'params': params,
-                  'response_code': response.status_code}
-        values.update(message=json.loads(response.content))
-        self.env['api.raindance.request.history'].create(values)
+    def create_request_history(
+        self, method, url, response, payload=None, headers=None, params=None
+    ):
+        values = {
+            "config_id": self.id,
+            "method": method,
+            "url": url,
+            "payload": payload,
+            "request_headers": headers,
+            "response_headers": response.headers,
+            "params": params,
+            "response_code": response.status_code,
+        }
+        try:
+            values.update(message=json.loads(response.content))
+        except:
+            pass
+        self.env["api.raindance.request.history"].create(values)
         self._cr.commit()
 
     @api.model
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
-        headers = {'x-amf-mediaType': "application/json",
+        system_id = self.env["ir.config_parameter"].sudo().get_param("api_ipf.ipf_system_id", "AFDAFA")
+        headers = {'Content-Type': "application/json",
                    'AF-TrackingId': tracking_id,
-                   'AF-SystemId': "AF-SystemId",
-                   'AF-EndUserId': "AF-EndUserId",
+                   'AF-SystemId': system_id,
+                   'AF-EndUserId': "*sys*",
                    'AF-Environment': self.environment}
         return headers
 
     @api.model
     def get_url(self, path):
-        if self.url[-1] == '/':
-            url = self.url[1:]
+        if self.url[-1] == "/":
+            url = self.url + path
         else:
-            url = self.url
-        url += self._suffix_url
-        if path[0] != '/':
-            url += '/'
-        url += path
+            url = self.url + "/" + path
         return url
 
-    def get_invoices(self, supplier_id=None, date=None):
-        url = self.get_url('/invoices')
-        payload = {}
-        if supplier_id:
-            payload.update({'supplier_id': supplier_id})
-        if date:
-            payload.update({'date': date})
+    def get_invoices(self, order_id=None):
+        url = self.get_url('invoices')
+        params = {'order_id': order_id}
         response = self.request_call(
             method="GET",
             url=url,
             headers=self.get_headers(),
-            params=payload
+            params=params
             )
-
-        return response
+        return json.loads(response.text)
 
     def get_invoice(self, invoice_id):
-        url = self.get_url('/invoices/%s' % invoice_id)
-        payload = {}
+        url = self.get_url("invoices/%s" % invoice_id)
+        # payload = {}
         response = self.request_call(
             method="GET",
             url=url,
-            payload=json.dumps(payload),
-            headers=self.get_headers())
-        return response
+            # payload=json.dumps(payload),
+            headers=self.get_headers(),
+            params=False
+        )
+        return json.loads(response.text)
 
     def verify_config_is_set(self):
-        return all(
-            (self.url, self.environment, self.client_id, self.client_secret))
+        return all((self.url, self.environment, self.client_id, self.client_secret))
 
     def testing_get_invoices(self):
-        return self.get_invoices(123,"200220")
+        return self.get_invoices(123, "200220")
 
     def testing_get_invoice(self):
-        return self.get_invoice('758492')
+        return self.get_invoice("758492")
