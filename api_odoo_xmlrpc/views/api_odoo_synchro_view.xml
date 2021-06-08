@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="synch_config" name="Configuration Synchronization"
+              parent="base_setup.menu_config" sequence="3" groups="base.group_no_one"/>
+
+    <record id="view_transfer_line_form" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.line.form</field>
+        <field name="model">api.odoo.synchro.obj.line</field>
+        <field name="arch" type="xml">
+            <form string="Transfered IDs Details" create="false" edit="false">
+                <sheet>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="obj_id"/>
+                        <field name="local_id" readonly="1"/>
+                        <field name="remote_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_transfer_line_tree" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.line.tree</field>
+        <field name="model">api.odoo.synchro.obj.line</field>
+        <field name="arch" type="xml">
+            <tree string="Transfered IDs Details" create="false" edit="false">
+                <field name="name"/>
+                <field name="obj_id"/>
+                <field name="local_id"/>
+                <field name="remote_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_filters_transfer_line_form" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.line.search</field>
+        <field name="model">api.odoo.synchro.obj.line</field>
+        <field name="arch" type="xml">
+            <search string="Transfered Ids Details">
+                <field name="name"/>
+                <field name="obj_id"/>
+                <group string="Group By">
+                    <filter string="Object" name="grp_obj" context="{'group_by':'obj_id'}"/>
+                    <filter string="Date" name="grp_date" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="actions_transfer_line_form" model="ir.actions.act_window">
+        <field name="name">Filters</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">api.odoo.synchro.obj.line</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_transfer_line_tree"/>
+        <field name="search_view_id" ref="ir_filters_transfer_line_form"/>
+    </record>
+
+    <record id="action_odoo_api_synchro_obj_line_tree" model="ir.actions.act_window">
+        <field name="name">Synchronized instances</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">api.odoo.synchro.obj.line</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <menuitem id="menu_history_sync" name="History"
+              groups="base.group_no_one" parent="api_odoo_xmlrpc.menu_synchronization"/>
+    <menuitem action="action_odoo_api_synchro_obj_line_tree"
+              id="menu_action_odoo_api_synchro_obj_line_tree"
+              parent="api_odoo_xmlrpc.menu_history_sync"/>
+
+    <record id="api_odoo_synchro_obj_form" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.form</field>
+        <field name="model">api.odoo.synchro.obj</field>
+        <field name="arch" type="xml">
+            <form string="Transfer Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="server_id"/>
+                        <field name="model_id"/>
+                        <field name="action"/>
+                        <field name="sequence"/>
+                        <field name="domain" colspan="4"/>
+                        <field name="synchronize_date"/>
+                    </group>
+                    <separator string="Fields Not Sync."/>
+                    <field name="avoid_ids" context="{'default_model_id': model_id}">
+                        <tree string="Fields" editable="bottom">
+                            <field name="model_id" invisible="1"/>
+                            <field name="field_id" domain="[('model_id', '=', model_id)]"/>
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="api_odoo_synchro_obj_tree" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.tree</field>
+        <field name="model">api.odoo.synchro.obj</field>
+        <field name="arch" type="xml">
+            <tree string="Synchronized Objects">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="server_id"/>
+                <field name="action"/>
+                <field name="synchronize_date"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_filters_regclass_tree" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.obj.line.form</field>
+        <field name="model">api.odoo.synchro.obj</field>
+        <field name="arch" type="xml">
+            <search string="Synchronized objects">
+                <field name="model_id"/>
+                <field name="synchronize_date"/>
+                <filter name="Active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="Inactive" string="Inactive" domain="[('active', '=', False)]" />
+                <group string="Group By">
+                  <filter string="Object to synchronize" name="grp_model"
+                          context="{'group_by':'model_id'}"/>
+                  <filter string="Latest synchronization" name="grp_sync_date"
+                          context="{'group_by':'synchronize_date'}"/>
+                   <filter name="active" string="Active"
+                        context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="actions_regclass_tree" model="ir.actions.act_window">
+        <field name="name">Filters</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">api.odoo.synchro.obj</field>
+        <field name="view_id" ref="api_odoo_synchro_obj_tree"/>
+        <field name="search_view_id" ref="ir_filters_regclass_tree"/>
+    </record>
+
+    <record id="action_transfer_tree" model="ir.actions.act_window">
+        <field name="name">Synchronized objects</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">api.odoo.synchro.obj</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <menuitem action="action_transfer_tree" id="transfer_menu_id"
+              parent="api_odoo_xmlrpc.synch_config" name="Objects to be Synchronized"/>
+
+    <record id="view_api_odoo_synchro_server_tree" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.server.tree</field>
+        <field name="model">api.odoo.synchro.server</field>
+        <field name="arch" type="xml">
+            <tree string="Synchronized Server">
+                <field name="name"/>
+                <field name="server_url"/>
+                <field name="server_port"/>
+                <field name="server_db"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_api_odoo_synchro_server_form" model="ir.ui.view">
+        <field name="name">api.odoo.synchro.server.form</field>
+        <field name="model">api.odoo.synchro.server</field>
+        <field name="arch" type="xml">
+            <form string="Synchronized server">
+                <header>
+                    <button name="check_connection" string="Test Connection" type="object"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="name"/>
+                        <field name="login"/>
+                        <field name="password" password="True"/>
+                        <field name="server_url" placeholder="192.321.33.111 or example.com"/>
+                        <field name="server_port"/>
+                        <field name="server_db"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_api_odoo_synchro_server_tree" model="ir.actions.act_window">
+        <field name="name">Servers to be synchronized</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">api.odoo.synchro.server</field>
+        <field name="view_type">form</field>
+    </record>
+
+    <menuitem action="action_api_odoo_synchro_server_tree" id="synchro_server_tree_menu_id"
+              parent="api_odoo_xmlrpc.synch_config"/>
+
+</odoo>

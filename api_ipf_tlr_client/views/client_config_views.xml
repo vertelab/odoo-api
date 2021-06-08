@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<data>
+    <record model="ir.ui.view" id="ipf_client_config_view_list">
+        <field name="name">IPF TLR Client Config View List</field>
+        <field name="model">ipf.tlr.client.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="url"/>
+                <field name="environment"/>
+                <field name="client_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ipf_client_config_view_form">
+        <field name="name">IPF TLR Client Config View Form</field>
+        <field name="model">ipf.tlr.client.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button class="btn-secondary" type="object"
+                            string="Uppföljningskategorier"
+                            name="get_uppfoljningskategorier"
+                            help="Listar alla uppföljningskategorier"/>
+                    <button class="btn-secondary" type="object"
+                            string="Tjanstekategorier"
+                            help="Listar tjänstekategorier, anger vilken typ en tjänst är."
+                            name="get_tjanstekategorier"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjanster"
+                            name="get_tjanster"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjanstekategori-id"
+                            help="Listar tjänster som tillhör en tjänstekategori."
+                            name="test_get_tjanstekategori_id"/>
+                    <button class="btn-secondary" type="object"
+                            string="leveransomraden"
+                            help="Listar leveransområden som tillhör en tjänst, leveransområden innehåller orter."
+                            name="get_leveransomraden"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjanst-id"
+                            help="Listar leveransområden för en specifik tjänst."
+                            name="test_get_tjanst_id"/>
+                    <button class="btn-secondary" type="object"
+                            string="sprak"
+                            help="Listar språk."
+                            name="get_sprak"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjansteleverantorer"
+                            help="Listar tjänsteleverantörer för en angiven tjänst."
+                            name="test_get_tjansteleverantorer"/>
+                    <button class="btn-secondary" type="object"
+                            string="texter"
+                            help="Listar texter."
+                            name="get_texter"/>
+                    <button class="btn-secondary" type="object"
+                            string="avrops Typ"
+                            help="Listar avropstyper."
+                            name="get_avropsTyp"/>
+                    <button class="btn-secondary" type="object"
+                            string="betalmodell Typ"
+                            help="Listar betalmodeller."
+                            name="get_betalmodellTyp"/>
+                    <button class="btn-secondary" type="object"
+                            string="yrkesinriktning"
+                            help="Listar yrkesinriktningar."
+                            name="get_yrkesinriktning"/>
+                    <button class="btn-secondary" type="object"
+                            string="organisationsnummer"
+                            help="Hämta utförande verksamhet med ett organisationsnummer för verksamheten."
+                            name="get_organisationsnummer"/>
+                    <button class="btn-secondary" type="object"
+                            string="utforandeVerksamhetMedKoordinater"
+                            help="Hämta utförande verksamhet med koordinater för sökande. Används för att hitta verksamheter som kan leverera tjänster i närheten av sökande."
+                            name="test_get_utforandeVerksamhetMedKoordinater"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjanst"
+                            help="Hämta en specifik tjänst."
+                            name="test_get_tjanst"/>
+                    <button class="btn-secondary" type="object"
+                            string="utforande-verksamhet-id"
+                            help="Hämta utförande verksamhet med ett utforandeVerksamhetId som tillhör verksamheten."
+                            name="test_get_utforande_verksamhet_id"/>
+                    <button class="btn-secondary" type="object"
+                            string="adress"
+                            help="Hämta en specifik adress med angivet id."
+                            name="test_get_adress"/>
+                    <button class="btn-secondary" type="object"
+                            string="deklaration"
+                            help="Hämta en specifik deklaration med angivet id."
+                            name="test_get_deklaration"/>
+                    <button class="btn-secondary" type="object"
+                            string="tjansteleverantor"
+                            help="Hämta en specifik tjänsteleverantör med angivet id."
+                            name="test_get_tjansteleverantor"/>
+                </header>
+                <sheet>
+                    <group>
+                    <group>
+                        <field name="url"/>
+                        <field name="environment"/>
+                        <field name="client_id"/>
+                        <field name="client_secret" password="True"/>
+                    </group>
+                    <group string="Requests" colspan="4">
+                        <field name="request_history_ids" nolabel="1"
+                               colspan="4">
+                            <tree>
+                                <field name="url"/>
+                                <field name="method"/>
+                                <field name="response_code"/>
+                                <field name="message"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="url"/>
+                                    <field name="method"/>
+                                    <field name="payload"/>
+                                    <field name="request_headers"/>
+                                    <field name="params"/>
+                                    <field name="response_code"/>
+                                    <field name="response_headers"/>
+                                    <field name="message"/>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ipf_client_config_action_window">
+        <field name="name">IPF TLR Client Config</field>
+        <field name="res_model">ipf.tlr.client.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="ipf_client_config"
+              name="IPF TLR Client Config"
+              action="ipf_client_config_action_window"
+              parent="base.menu_custom"
+              sequence="120"/>
+</data>
