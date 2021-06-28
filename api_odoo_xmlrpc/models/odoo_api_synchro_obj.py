@@ -1,6 +1,7 @@
-from odoo import api, fields, models, _
-from xmlrpc.client import ServerProxy
 from odoo.exceptions import Warning
+from xmlrpc.client import ServerProxy
+
+from odoo import api, fields, models, _
 
 
 class RPCProxyOne(object):
@@ -35,8 +36,8 @@ class RPCProxy(object):
     def get(self, ressource):
         return RPCProxyOne(self.server, ressource)
 
-class OdooAPISynchroServer(models.Model):
 
+class OdooAPISynchroServer(models.Model):
     _name = "api.odoo.synchro.server"
     _description = "Synchronized server"
 
@@ -107,6 +108,7 @@ class OdooAPISynchroObjAvoid(models.Model):
     obj_id = fields.Many2one('api.odoo.synchro.obj', 'Object',
                              required=True, ondelete='cascade')
     model_id = fields.Many2one('ir.model')
+
 
 class OdooAPISynchroObjLine(models.Model):
     _name = "api.odoo.synchro.obj.line"

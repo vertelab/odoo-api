@@ -20,8 +20,9 @@
 #
 ################################################################################
 
-import logging
 import json
+import logging
+
 from odoo import http
 from .token import \
     validate_token, valid_response, invalid_response

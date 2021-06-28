@@ -20,11 +20,12 @@
 #
 ################################################################################
 
-from odoo.tools import pycompat
 import json
-import uuid
 import logging
 import requests
+import uuid
+from odoo.tools import pycompat
+
 from odoo import api, http, models, tools, SUPERUSER_ID, fields
 
 _logger = logging.getLogger(__name__)
@@ -36,6 +37,7 @@ class ApiRaindanceError(Exception):
 
 class ClientConfig(models.Model):
     _name = "api.raindance.client.config"
+    _description = "API Raindance Client Config"
     _rec_name = "url"
     _order = "sequence, id"
     _suffix_url = ""
@@ -91,7 +93,7 @@ class ClientConfig(models.Model):
 
     @api.model
     def create_request_history(
-        self, method, url, response, payload=None, headers=None, params=None
+            self, method, url, response, payload=None, headers=None, params=None
     ):
         values = {
             "config_id": self.id,
@@ -137,7 +139,7 @@ class ClientConfig(models.Model):
             url=url,
             headers=self.get_headers(),
             params=params
-            )
+        )
         return json.loads(response.text)
 
     def get_invoice(self, invoice_id):

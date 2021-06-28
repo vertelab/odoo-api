@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class ResRequest(models.Model):
     _name = 'res.request'
     _order = 'date desc'
