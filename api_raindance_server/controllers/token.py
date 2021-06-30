@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+import datetime
+import functools
 ################################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -21,11 +23,9 @@
 ################################################################################
 import json
 import logging
-import werkzeug.wrappers
-import datetime
 import time
+import werkzeug.wrappers
 from odoo.http import request
-import functools
 
 _logger = logging.getLogger(__name__)
 
@@ -117,26 +117,26 @@ def get_payload(status, typ, message):
         }
     else:
         return {
-        "error_id": "77506961-60e4-42be-aff6-123ca6d4eea3",
-        "message": typ,
-        "cause": {
-            "system": "EIS",
-            "code": "1002",
-            "message": message and str(
-                message) or "Wrong arguments (missing validation)",
-            "error": [
-                {
-                    "falt": None,
-                    "felkod": 1002,
-                    "operation": None,
-                    "kravnummer": None,
-                    "meddelande": message and str(
-                        message) or "Wrong arguments (missing validation)",
-                    "valideringsregelTyp": None,
-                    "valideringsregelvarde": None,
-                    "entitetTyp": None,
-                    "entitetId": None
-                }
-            ]
+            "error_id": "77506961-60e4-42be-aff6-123ca6d4eea3",
+            "message": typ,
+            "cause": {
+                "system": "EIS",
+                "code": "1002",
+                "message": message and str(
+                    message) or "Wrong arguments (missing validation)",
+                "error": [
+                    {
+                        "falt": None,
+                        "felkod": 1002,
+                        "operation": None,
+                        "kravnummer": None,
+                        "meddelande": message and str(
+                            message) or "Wrong arguments (missing validation)",
+                        "valideringsregelTyp": None,
+                        "valideringsregelvarde": None,
+                        "entitetTyp": None,
+                        "entitetId": None
+                    }
+                ]
+            }
         }
-    }

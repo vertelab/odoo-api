@@ -20,11 +20,12 @@
 #
 ################################################################################
 
-from odoo.tools import pycompat
 import json
-import uuid
 import logging
 import requests
+import uuid
+from odoo.tools import pycompat
+
 from odoo import api, http, models, tools, SUPERUSER_ID, fields
 
 _logger = logging.getLogger(__name__)

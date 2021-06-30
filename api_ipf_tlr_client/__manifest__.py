@@ -27,7 +27,6 @@
     'description': """
 
 """,
-
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',

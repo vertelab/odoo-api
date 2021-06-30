@@ -25,6 +25,7 @@ from odoo import models, fields
 
 class ApiRaindanceRequestHistory(models.Model):
     _name = 'api.raindance.request.history'
+    _description = "API Raindance Request History"
     _rec_name = 'url'
 
     config_id = fields.Many2one('api.raindance.client.config',

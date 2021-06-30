@@ -45,7 +45,6 @@
     </record>
 
 
-
     <menuitem
             id="base_setup.menu_config"
             name="General Settings"
@@ -53,7 +52,7 @@
             sequence="2"
             groups="base.group_system"/>
 
-     <menuitem
+    <menuitem
             id="menu_config_base_setup"
             name="General Settings"
             parent="base_setup.menu_config"
