@@ -134,13 +134,21 @@ class ClientConfig(models.Model):
     def get_invoices(self, order_id=None):
         url = self.get_url('invoices')
         params = {'order_id': order_id}
-        response = self.request_call(
-            method="GET",
-            url=url,
-            headers=self.get_headers(),
-            params=params
-        )
-        return json.loads(response.text)
+        try:
+            response = self.request_call(
+                method="GET",
+                url=url,
+                headers=self.get_headers(),
+                params=params
+            )
+            if response.status_code != 200:
+                _logger.error("Something went wrong when getting Order from API Raindance Client Config")
+                error_msg = str(response.status_code) + " - " + response.reason
+                _logger.error("Getting %s Response" % error_msg)
+            return json.loads(response.text)
+        except Exception as e:
+            _logger.error("Something went wrong when getting Order from API Raindance Client Config")
+            _logger.error(str(e))
 
     def get_invoice(self, invoice_id):
         url = self.get_url("invoices/%s" % invoice_id)
