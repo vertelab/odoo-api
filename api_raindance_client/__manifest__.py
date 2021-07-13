@@ -22,7 +22,7 @@
 
 {
     'name': 'API Raindance Client',
-    'version': '12.0.0.0.3',
+    'version': '12.0.0.0.4',
     'category': 'Tools',
     'description': """APi for connection between DAFA and Raindance \n
     
@@ -31,14 +31,15 @@
     
     """,
 
-    'author': "N-development",
+    'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://www.vertel.se',
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
     'depends': [
-        'hr'
+        'hr',
+        'api_ipf'
     ],
     'data': [
         'security/ir.model.access.csv',
