@@ -141,14 +141,14 @@ class ClientConfig(models.Model):
                 headers=self.get_headers(),
                 params=params
             )
-            if response.status_code != 200:
-                _logger.error("Something went wrong when getting Order from API Raindance Client Config")
+            if response and response.status_code != 200:
                 error_msg = str(response.status_code) + " - " + response.reason
-                _logger.error("Getting %s Response" % error_msg)
+                _logger.error(
+                    "Something went wrong when getting Order from API Raindance Client Config."
+                    " Getting %s Response" % error_msg)
             return json.loads(response.text)
         except Exception as e:
-            _logger.error("Something went wrong when getting Order from API Raindance Client Config")
-            _logger.error(str(e))
+            _logger.error("Something went wrong when getting Order from API Raindance Client Config. %s" % str(e))
 
     def get_invoice(self, invoice_id):
         url = self.get_url("invoices/%s" % invoice_id)
