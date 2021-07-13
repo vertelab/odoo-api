@@ -60,5 +60,15 @@
                 </xpath>
             </field>
         </record>
+        <menuitem id="api_client_config_parent_menu"
+                  name="API Client Config"
+                  parent="base.menu_custom"
+                  sequence="121"/>
+        <menuitem id="client_config_request_history_parent_menu"
+                  name="Request History"
+                  parent="api_client_config_parent_menu"
+                  sequence="120"/>
+
+
     </data>
 </odoo>

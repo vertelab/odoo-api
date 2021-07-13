@@ -22,20 +22,23 @@
 
 {
     'name': 'IPF TLR Client',
-    'version': '12.0.0.0.1',
+    'version': '12.0.0.0.2',
     'category': 'Tools',
     'description': """
 
 """,
-    'author': "N-development",
+    'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://www.vertel.se',
+    'depends': [
+        'api_ipf'
+    ],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',
     ],
     'installable': True,
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
 }
