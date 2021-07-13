@@ -22,11 +22,12 @@
 
 {
     'name': 'API Raindance Client',
-    'version': '12.0.0.0.2',
+    'version': '12.0.0.0.3',
     'category': 'Tools',
     'description': """APi for connection between DAFA and Raindance \n
     
     v12.0.0.0.2 AFC-2560 Fixed better error message for API configuration.
+    v12.0.0.0.3 AFC-2560 Added error message in one line and Improved code to fix error when success response.
     
     """,
 
