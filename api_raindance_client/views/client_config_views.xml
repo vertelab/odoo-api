@@ -89,14 +89,14 @@
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="api_raindance_client_request_history_action_window">
+    <record model="ir.actions.act_window" id="api_raindance_client_config_request_history_action_window">
         <field name="name">API Raindance Client Config Request History</field>
         <field name="res_model">api.raindance.request.history</field>
         <field name="view_mode">tree</field>
     </record>
     <menuitem id="menu_api_raindance_client_config_request_history"
               name="API Raindance"
-              action="api_raindance_client_request_history_action_window"
+              action="api_raindance_client_config_request_history_action_window"
               parent="api_ipf.client_config_request_history_parent_menu"
               sequence="8"/>
 </data>
