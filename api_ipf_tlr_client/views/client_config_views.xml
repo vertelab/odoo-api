@@ -167,7 +167,7 @@
         <field name="res_model">ipf.tlr.request.history</field>
         <field name="view_mode">tree</field>
     </record>
-    <menuitem id="ipf_client_config_request_history"
+    <menuitem id="menu_ipf_client_config_request_history"
               name="IPF TLR"
               action="ipf_client_config_request_history_action_window"
               parent="api_ipf.client_config_request_history_parent_menu"
