@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <data>
-    <record model="ir.ui.view" id="ipf_client_config_view_list">
+    <record model="ir.ui.view" id="ipf_tlr_client_config_view_list">
         <field name="name">IPF TLR Client Config View List</field>
         <field name="model">ipf.tlr.client.config</field>
         <field name="arch" type="xml">
@@ -13,7 +13,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="ipf_client_config_view_form">
+    <record model="ir.ui.view" id="ipf_tlr_client_config_view_form">
         <field name="name">IPF TLR Client Config View Form</field>
         <field name="model">ipf.tlr.client.config</field>
         <field name="arch" type="xml">
@@ -128,25 +128,24 @@
                         </group>
                     </group>
                 </sheet>
-
             </form>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="ipf_client_config_action_window">
+    <record model="ir.actions.act_window" id="ipf_tlr_client_config_action_window">
         <field name="name">IPF TLR Client Config</field>
         <field name="res_model">ipf.tlr.client.config</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="ipf_client_config"
+    <menuitem id="ipf_tlr_client_config_menu"
               name="IPF TLR"
-              action="ipf_client_config_action_window"
+              action="ipf_tlr_client_config_action_window"
               parent="api_ipf.api_client_config_parent_menu"
               sequence="1"/>
 
-    <record model="ir.ui.view" id="ipf_client_config_request_history_view_list">
-        <field name="name">IPF Client Config Request History View List</field>
+    <record model="ir.ui.view" id="ipf_tlr_request_history_view_list">
+        <field name="name">IPF TLR Request History View List</field>
         <field name="model">ipf.tlr.request.history</field>
         <field name="arch" type="xml">
             <tree>
@@ -162,14 +161,14 @@
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="ipf_client_config_request_history_action_window">
+    <record model="ir.actions.act_window" id="ipf_tlr_request_history_action_window">
         <field name="name">IPF Client Config Request History</field>
         <field name="res_model">ipf.tlr.request.history</field>
         <field name="view_mode">tree</field>
     </record>
-    <menuitem id="menu_ipf_client_config_request_history"
+    <menuitem id="menu_ipf_tlr_request_history"
               name="IPF TLR"
-              action="ipf_client_config_request_history_action_window"
+              action="ipf_tlr_request_history_action_window"
               parent="api_ipf.client_config_request_history_parent_menu"
               sequence="1"/>
 
