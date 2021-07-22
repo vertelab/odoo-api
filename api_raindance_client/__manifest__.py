@@ -22,7 +22,7 @@
 
 {
     'name': 'API Raindance Client',
-    'version': '12.0.0.0.4',
+    'version': '12.0.0.0.5',
     'category': 'Tools',
     'description': """APi for connection between DAFA and Raindance \n
     
