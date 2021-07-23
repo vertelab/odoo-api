@@ -10,6 +10,7 @@ The module is maintained here: https://github.com/vertelab/odoo-api/tree/Dev-12.
 Different version submitted
 ===========================
 1. V12.0.0.0.2 AFC-2566 Added request history to technical menu.
+2. V12.0.0.0.3 #701 - Added Form and Search view for IPF TLR client response history.
 
 Maintainers
 ~~~~~~~~~~~
